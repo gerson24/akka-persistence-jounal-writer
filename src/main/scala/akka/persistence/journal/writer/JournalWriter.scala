@@ -35,11 +35,11 @@ class WriteJournalAdapterCameo(writePlugin: ActorRef, replyTo: ActorRef, message
     if (messages.isEmpty)
       replyWithSuccess(replyTo)
     else
-      writePlugin ! writeMessages(messages, self)
+      messages.foreach(msg => writePlugin ! writeMessages(Seq(msg), self))
   }
 
   override def receive: Receive = {
-    case msg: WriteMessageSuccess =>
+    case WriteMessageSuccess =>
       replyWithSuccess(replyTo)
     case WriteMessagesSuccessful =>
       replyWithSuccess(replyTo)
